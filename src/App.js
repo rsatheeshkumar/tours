@@ -8,7 +8,7 @@ function App() {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(null);
 
-  useEffect(() => {
+  const fetchTours = () => {
     axios
       .get(url)
       .then((result) => {
@@ -20,6 +20,9 @@ function App() {
         setLoading(true);
         console.log(error);
       });
+  };
+  useEffect(() => {
+    fetchTours();
   }, []);
   const removeTour = (id) => {
     const newState = tours.filter((tour) => tour.id !== id);
@@ -30,6 +33,18 @@ function App() {
     return (
       <main>
         <Loading />
+      </main>
+    );
+  }
+  if (tours.length === 0) {
+    return (
+      <main>
+        <div className="title">
+          <h2>no tours left</h2>
+          <button className="btn" onClick={() => fetchTours()}>
+            refresh
+          </button>
+        </div>
       </main>
     );
   }
